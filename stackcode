@@ -1,66 +1,176 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <bits/stdc++.h>
+using namespace std;
 
-int nop(void) {
-  int n=6;
-  int k=100;
-  long long int *arrays[n-1];
+typedef struct Node {
+    int number;
+    struct Node* next;
+} Node;
+//
+void Push(Node** head, int A)
+{
+    Node* n = (Node*)malloc(sizeof(Node));
+    n->number = A;
+    n->next = *head;
+    *head = n;
+}
 
-  for (int i = 2; i <=n; i++){
-    arrays[i] = malloc(i * 16);
+//
+
+void deleten(Node** head, int position){
+  Node* one;
+  Node* two;
+  two=*head;
+ 
+  int i=0;
+  if(position==1){
+    *head=(*head)->next;
+
   }
-  *arrays[2]=1;
-  *(arrays[2]+1)=1;
+  else{
+    while(i!=position-2){
+      two=(two)->next;
+      i=i+1;
+     
+    }
+    one=(two)->next;
+    one=(one)->next;
+    (two)->next=(one);
+   
+  }
+}
+
+//
+
+int min(int a,int b){
+  if(a<=b){
+    return a;
+  }
+  else{
+    return b;
+  }
+}
+
+//
+
+int no_of_permutation(int n,long long int k) {
+
+  //initialising dynamic array of arrays and store the whole tree
+  long long int ** array ;
+  array=(long long int**)malloc(n*sizeof(long long int*));
+  for(int i=0;i<n;i++){
+    array[i]=(long long int*)malloc((i+1)*sizeof(long long int));
+  }
+ 
+  array[0][0]=1;
+  //filling the tree
   int f;
-  for (int i = 3; i <=n; i++){
-    for (int j = 0; j <=i-2; j++){
+  for (int i = 1; i <=n-1; i++){
+    for (int j = 0; j <=i-1; j++){
       f=0;
-      *(arrays[i]+j)=0;
+      array[i][j]=0;
       while(f<=j){
-        *(arrays[i]+j)=*(arrays[i]+j)+*(arrays[i-1]+f);
+        array[i][j]=array[i][j]+array[i-1][f];
         f++;
       }
-      /*printf("%d ",i);
-      printf("%d ",j);
-      printf("%lld\n",*(arrays[i]+j));*/
     }
-    *(arrays[i]+i-1)=*(arrays[i]+(i-2));
-    /*printf("%d ",i);
-    printf("%d ",i-1);
-    printf("%lld\n",*(arrays[i]+i-1));*/
-  
+    array[i][i]=array[i][i-1];
+ 
   }
-  int sum_arr[n];
-  int debg=0;
-  int debi=0;
-  int g=0;
-  int i=n-1;
-  printf("%d",arrays[2]);
-  printf("%d",arrays[3]);
-  printf("%d",arrays[4]);
-  printf("%d",arrays[5]);
-  printf("%d",arrays[6]);
-  printf("%d",&debg);
-  printf("%d",&debi);
-  /*while(g!=k){
-    for(int j=0;j<=n-1;j++){
-      while(g<=k){
-        debg=g;
-        g=*(arrays[n-j]+i)+g;
-        i=i-1;
-        printf("%d",i);
-      
-      }
-      sum_arr[j]=i;
-      g=debg;
+  for(int i=0;i<=n-1;i++){
+    for(int j=0;j<=i;j++){
     }
-    printf("fd");
+  }
+  long long int total_sum=0;
+  for(int i=0;i<=n-1;i++){
+    total_sum=total_sum+array[n-1][i];
+  }
+  printf("%lld",total_sum);
+  cout<<endl;
+
+
+  //now to get the lexicographical order, we made an array sum_arr which will help us to get to the final kth permutation
+ 
+  int sum_arr[n];
+  long long int debg=0;
+  int debi=0;
+  long long int g=0;
+  int i=n-1;
+  for(int j=0;j<=n-1;j++){
+    i=min(i,n-1-j);
+    while(g<k){
+      debg=g;
+      debi=i;
+      g=array[n-1-j][i]+g;
+      i=i-1;
+   
+    }
+    i=debi;
+   
+    sum_arr[j]=i;
     
-  }*/
-  //printf("%d",sum_arr[0]);
+    g=debg;
+  }
+ 
+  //now our new_arr is the array which will give us kth permutation
+
+  int new_arr[n];
+  new_arr[0]=n-sum_arr[0];
+ 
+  //this list contains number 1 to 30; we will omit one number after each iteration and add it to the new_arr according to the array sum_arr
+ 
+  Node* list = (Node*)malloc(sizeof(Node));
+  list->next = NULL;
+  for(int i=1;i<=n;i++){
+    Push(&list,n-i+1);
+  }
+ 
+  int v=0;
+  v=n-sum_arr[0];
+  new_arr[0]=v;
+  deleten(&list,v);
+  v=v-1;
+  printf(" %d",new_arr[0]);
+  Node* ptr;
+  ptr=list;
+
+ 
+  for(int i=1;i<=n-1;i++){
+    ptr=list;
+    if(sum_arr[i]==sum_arr[i-1]){
+      for (int i=1;i<=v-1;i++){
+        ptr=ptr->next;
+      }
+      new_arr[i]=ptr->number;
+      printf(" %d",new_arr[i]);
+      deleten(&list,v);
+      v=v-1;
+    }
+    else{
+      v=v+(sum_arr[i-1]-sum_arr[i]);
+      for (int i=1;i<=v-1;i++){
+        ptr=ptr->next;
+      }
+      new_arr[i]=ptr->number;
+      deleten(&list,v);
+      printf(" %d",new_arr[i]);
+      v=v-1;
+    }
+  }
+  cout<<endl;
+  
+
+ 
   return 0;
 }
+
 int main(void){
-  nop();
+  int n=5;
+  long long int k=42;
+ 
+  
+    no_of_permutation(n,k);
+    
   return 0;
 }
