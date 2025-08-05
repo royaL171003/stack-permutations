@@ -40,7 +40,7 @@ This project implements an efficient algorithm to construct the k-th permutation
 
 ### Part 1: Preparing an array of array
 
-We start with first array of lenth 1 and value 1. Subsequently in other array for `A~n~[i]` we compute sum of `A~n-1~[0]` to `A~n-1~[i]` and finally the last element of the array will be same as second last(You will understand why i did this if you just write sttack permutations of some of first few natural numbers).
+We start with first array of lenth 1 and value 1. Subsequently in other array for `Aₙ[i]` we compute sum of `Aₙ₋₁[0]` to `Aₙ₋₁[i]` and finally the last element of the array will be same as second last(You will understand why i did this if you just write sttack permutations of some of first few natural numbers).
 
 
 ### Part 2: Formation of helping array
