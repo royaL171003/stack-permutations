@@ -62,11 +62,11 @@ git clone https://github.com/royaL171003/stack-permutations.git
 cd stack-permutations
 
 # Compile the source code
-g++ -o stack_permute main main.cpp
+g++ -o run_stack_permute main stackcode.cpp
 
 # Run the program
 # The program will prompt for n and k
-./stack_permute
+./run_stack_permute
 
 # The program starts and asks for your input
 Enter the value of n: 28
